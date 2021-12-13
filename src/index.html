@@ -1,14 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
 	<head>
-		<title>Space Raced Carded Edition Calculator</title>
+		<title>Rās Online Score Computer</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700"
+			media="screen"
+			rel="stylesheet"
+			type="text/css"
+		/>
+		<link
+			href="//cdn.muicss.com/mui-0.10.3/css/mui.min.css"
+			rel="stylesheet"
+			type="text/css"
+		/>
+		<script src="//cdn.muicss.com/mui-0.10.3/js/mui.min.js"></script>
 		<style type="text/css">
-			h1,
-			h2 {
-				font-size: 12pt;
+			/**
+			* Body CSS
+			*/
+			html,
+			body {
+				font-family: "Roboto", "Helvetica Neue", Helvetica, Arial;
+				height: 100%;
 			}
-			p {
-				font-size: 8pt;
+
+			html,
+			body,
+			input,
+			textarea,
+			select,
+			button {
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+				text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+			}
+
+			div[data-postfix] {
+				position: relative;
+			}
+			div[data-postfix]::after {
+				position: absolute;
+				bottom: 3px;
+				right: 0.5em;
+				transition: all 0.05s ease-in-out;
+				content: attr(data-postfix);
+			}
+			div[data-postfix]:hover::after,
+			div[data-postfix]:focus-within::after {
+				right: 1.5em;
+			}
+			@supports (-moz-appearance: none) {
+				div[data-postfix]::after {
+					right: 1.5em;
+				}
 			}
 		</style>
 		<script type="text/javascript">
@@ -17,142 +63,223 @@
 			}
 
 			function calculate() {
-				roundNode = document.getElementById("round");
+				const roundNode = document.getElementById("round");
 
-				diNode = document.getElementById("di");
-				Di = diNode.value * 1;
-				viNode = document.getElementById("vi");
-				Vi = viNode.value * 1;
-				tiNode = document.getElementById("ti");
-				Ti = tiNode.value * 1;
+				const d0Node = document.getElementById("damageInitial");
+				const D0 = Number(d0Node.value);
+				const v0Node = document.getElementById("velocityInitial");
+				const V0 = Number(v0Node.value);
+				const t0Node = document.getElementById("totalTime");
+				const T0 = Number(t0Node.value);
 
-				xoNode = document.getElementById("xo");
-				Xo = xoNode.value * 1;
-				//xoNode.value="";
-				voNode = document.getElementById("vo");
-				Vo = voNode.value * 1;
-				//voNode.value="";
-				ofNode = document.getElementById("of");
-				Of = ofNode.value;
-				doNode = document.getElementById("do");
-				Do = doNode.value * 1;
-				//doNode.value="";
+				const oxNode = document.getElementById("distance");
+				const Ox = Number(oxNode.value);
+				const ovNode = document.getElementById("bestVelocity");
+				const Ov = Number(ovNode.value);
+				const osNode = document.getElementById("bestVelocitySign");
+				const Os = osNode.value;
+				const doNode = document.getElementById("danger");
+				const Od = Number(doNode.value);
 
-				smNode = document.getElementById("sm");
-				Sm = smNode.value * 1;
-				//smNode.value="";
-				saNode = document.getElementById("sa");
-				Sa = saNode.value * 1;
-				//saNode.value="";
-				stNode = document.getElementById("st");
-				St = stNode.value * 1;
-				//stNode.value="";
-				sdNode = document.getElementById("sd");
-				Sd = sdNode.value * 1;
-				//sdNode.value="";
+				const smNode = document.getElementById("maneuverability");
+				const Sm = Number(smNode.value);
+				const saNode = document.getElementById("armor");
+				const Sa = Number(saNode.value);
+				const stNode = document.getElementById("thrust");
+				const St = Number(stNode.value);
+				const sdNode = document.getElementById("damage");
+				const Sd = Number(sdNode.value);
 
-				dieRollD = rollDie(10);
+				const Ds = Math.max(
+					0,
+					Os * Math.floor((Od * (Ov - V0)) / (Sm + Sa + 1))
+				);
 
-				var Df;
-				if (Of == "+") {
-					Df = Math.floor((Do * (Vo - Vi)) / (Sm + Sa + 1)); // * dieRollV / 10
-				} else {
-					Df = Math.floor((Do * (Vi - Vo)) / (Sm + Sa + 1)); // * dieRollV / 10
-				}
-				if (Df < 0) Df = 0;
-				Df += Di;
+				const V = Math.floor(Math.sqrt(V0 * V0 + 2 * St * Ox) / (D0 + Ds + 1));
 
-				dieRollV = rollDie(10);
+				const T = Math.floor((2 * Ox) / (V0 + V)) + 1;
 
-				var Vf;
-				Vf = Math.floor(Math.sqrt(Vi * Vi + 2 * St * Xo) / (Df + 1)); // * dieRollV / 10
-				if (Vf < 0) Vf = 0; // BUG: Not matching rules!
+				const D = Math.max(0, D0 + Ds + T * Sd);
 
-				var Tt;
-				Tt = Math.floor((2 * Xo) / (Vi + Vf)) + 1;
+				const totalTime = T + T0;
 
-				Df += Sd * Tt;
-				if (Df < 0) Df = 0;
-
-				diNode.value = Df;
-				viNode.value = Vf;
-				tiNode.value = Tt + Ti;
+				d0Node.value = D;
+				v0Node.value = V;
+				t0Node.value = totalTime;
 
 				// Record
-				document.getElementById("results").innerHTML +=
-					"Round: " +
-					roundNode.value +
-					";\t" +
-					"Damage: " +
-					Df +
-					";\t" +
-					"Velocity: " +
-					Vf +
-					";\t" +
-					"Transit Time: " +
-					Tt +
-					";\t" +
-					"Total Time: " +
-					tiNode.value +
-					";\t" +
-					//					"\tSd="+Sd +
-					//					"Damage Roll: " + dieRollD + ";\t" +
-					//					"Velocity Roll: " + dieRollV + ";\t" +
-					"\n";
+				const roundLog = document.createElement("td");
+				roundLog.innerText = roundNode.value;
+				const damageLog = document.createElement("td");
+				damageLog.innerText = D;
+				const velocityLog = document.createElement("td");
+				velocityLog.innerText = V;
+				const transitTimeLog = document.createElement("td");
+				transitTimeLog.innerText = T;
+				const totalTimeLog = document.createElement("td");
+				totalTimeLog.innerText = totalTime;
+
+				const row = document.createElement("tr");
+				row.appendChild(roundLog);
+				row.appendChild(damageLog);
+				row.appendChild(velocityLog);
+				row.appendChild(transitTimeLog);
+				row.appendChild(totalTimeLog);
+				document.getElementById("results").appendChild(row);
 
 				roundNode.value++;
 			}
 
+			function reset() {
+				const log = document.getElementById("results");
+				while (log.firstChild) {
+					log.removeChild(log.firstChild);
+				}
+
+				document.getElementById("round").value = 1;
+
+				document.getElementById("damageInitial").value = 0;
+				document.getElementById("velocityInitial").value = 0;
+				document.getElementById("totalTime").value = 0;
+
+				document.getElementById("distance").value = "";
+				document.getElementById("bestVelocity").value = "";
+				document.getElementById("bestVelocitySign").value = "+";
+				document.getElementById("danger").value = "";
+
+				document.getElementById("maneuverability").value = "";
+				document.getElementById("armor").value = "";
+				document.getElementById("thrust").value = "";
+				document.getElementById("damage").value = "";
+			}
+
 			function testRounding() {
 				var x = -2.1;
-				alert(
+				const logEntry = document.createElement("td");
+				logEntry.colSpan = 5;
+				logEntry.innerText =
 					"floor(" +
-						x +
-						") = " +
-						Math.floor(x) +
-						", parseInt(" +
-						x +
-						") = " +
-						parseInt(x, 10)
-				);
+					x +
+					") = " +
+					Math.floor(x) +
+					", parseInt(" +
+					x +
+					") = " +
+					parseInt(x, 10);
+
+				const row = document.createElement("tr");
+				row.appendChild(logEntry);
+				document.getElementById("results").appendChild(row);
 			}
 		</script>
 	</head>
 	<body>
-		<div id="form">
+		<div id="form" class="mui-container">
 			<h1>Space Race Carded Edition Calculator</h1>
 			<p>
 				Note: due to rounding issues there might be some inaccuracies.
 				<a href="javascript:testRounding();">Click to test these issues.</a>
 			</p>
-			<h2>Current Status</h2>
-			<p>Typically you won't need to adjust these.</p>
-			Round: <input id="round" value="1" size="5" /><br />
-			Damage: <input id="di" type="text" size="5" value="0" />, Velocity:
-			<input id="vi" type="text" size="5" value="0" />AU/h, Time:
-			<input id="ti" type="text" size="8" value="0" />hrs<br />
-			<h2>Current Ship Information</h2>
-			<p>Enter the values from the totals of your Ship and Mod Cards:</p>
-			Ship Maneuverability: <input id="sm" type="text" size="5" value="0" />,
-			Ship Armor: <input id="sa" type="text" size="5" value="0" />, Ship Thrust:
-			<input id="st" type="text" size="5" value="0" />AU/h^2, Ship Damage/hr:
-			<input id="sd" type="text" size="5" value="0" /><br />
-			<h2>Current Obstacle Information</h2>
-			<p>Enter the values from the current Obstacle Card:</p>
-			Obstacle Distance: <input id="xo" type="text" size="5" value="0" />AU,
-			Obstacle Recommended Velocity:
-			<input id="vo" type="text" size="5" value="0" />AU/h, Obstacle Rec. Vel.
-			Flag:
-			<select id="of">
-				<option selected="selected" value="+">+</option>
-				<option value="-">-</option></select
-			>, Obstacle Danger: <input id="do" type="text" size="5" value="0" /><br />
-			<input type="button" onclick="calculate();" value="Calculate" />
+			<div class="mui-panel">
+				<legend>
+					<h2>Current Status</h2>
+					<p>Typically you won't need to adjust these.</p>
+				</legend>
+				<div class="mui-textfield float-label">
+					<input id="round" type="number" value="1" />
+					<label for="round">Round</label>
+				</div>
+				<div class="mui-textfield float-label">
+					<input id="damageInitial" type="number" value="0" />
+					<label for="damageInitial">Damage</label>
+				</div>
+				<div class="mui-textfield float-label" data-postfix="AU/h">
+					<input id="velocityInitial" type="number" value="0" />
+					<label for="velocityInitial">Velocity</label>
+				</div>
+				<div class="mui-textfield float-label" data-postfix="hours">
+					<input id="totalTime" type="number" value="0" />
+					<label for="totalTime">Total Time</label>
+				</div>
+			</div>
+			<div class="mui-panel">
+				<legend>
+					<h2>Current Ship Information</h2>
+					<p>Enter the values from the totals of your Ship and Mod Cards</p>
+				</legend>
+				<div class="mui-textfield float-label">
+					<input id="maneuverability" type="number" placeholder="0" required />
+					<label for="maneuverability">Maneuverability</label>
+				</div>
+				<div class="mui-textfield float-label">
+					<input id="armor" type="number" placeholder="0" required />
+					<label for="armor">Armor</label>
+				</div>
+				<div class="mui-textfield float-label" data-postfix="AU/h^2">
+					<input id="thrust" type="number" placeholder="0" required />
+					<label for="thrust">Thrust</label>
+				</div>
+				<div class="mui-textfield float-label" data-postfix="units/h">
+					<input id="damage" type="number" placeholder="0" required />
+					<label for="damage">Damage</label>
+				</div>
+			</div>
+			<div class="mui-panel">
+				<legend>
+					<h2>Current Obstacle Information</h2>
+					<p>Enter the values from the current Obstacle Card</p>
+				</legend>
+				<div class="mui-textfield float-label" data-postfix="AU">
+					<input id="distance" type="number" placeholder="0" required />
+					<label for="distance">Distance</label>
+				</div>
+				<div class="mui-textfield float-label" data-postfix="AU/h">
+					<input id="bestVelocity" type="number" placeholder="0" required />
+					<label for="bestVelocity">Recommended Velocity</label>
+				</div>
+				<div class="mui-select float-label">
+					<select id="bestVelocitySign">
+						<option selected="selected" value="+">+</option>
+						<option value="-">-</option>
+					</select>
+					<label for="bestVelocitySign">Recommended Velocity Flag</label>
+				</div>
+				<div class="mui-textfield float-label">
+					<input id="danger" type="number" placeholder="0" required />
+					<label for="danger">Danger</label>
+				</div>
+			</div>
+			<input
+				type="submit"
+				onclick="calculate();"
+				value="Calculate"
+				class="mui-btn mui-btn--primary mui-btn--raised"
+			/>
+			<input
+				type="button"
+				onclick="reset();"
+				value="Clear all"
+				class="mui-btn mui-btn--danger mui--pull-right"
+			/>
 		</div>
-		<div>
-			<h2>Log</h2>
-			<hr />
-			<pre id="results"></pre>
+		<div class="mui-container">
+			<div class="mui-panel">
+				<legend>
+					<h2>Log</h2>
+				</legend>
+				<table class="mui-table mui-table--bordered">
+					<thead>
+						<tr>
+							<th>Round</th>
+							<th>Damage</th>
+							<th>Velocity (AU/hr)</th>
+							<th>Transit Time (hours)</th>
+							<th>Total Time (hours)</th>
+						</tr>
+					</thead>
+					<tbody id="results"></tbody>
+				</table>
+			</div>
 		</div>
 	</body>
 </html>
