@@ -1,0 +1,32 @@
+# Reduce the set of instrumented files:
+# include: # Limit the set of instrumented files to those files in paths listed. Does not add any files: this is only a whitelist.
+exclude: # Remove any files that are found in the exclude array. Then restore any exclude negated files that have been excluded.
+  # The node_modules folder is already excluded.
+  - "**/*.test.ts"
+  - "**/*.test.tsx"
+  - "dist"
+  - "test"
+
+branches: 80
+functions: 80
+lines: 80
+statements: 80
+
+watermarks:
+  branches: [80, 95]
+  functions: [80, 95]
+  lines: [80, 95]
+  statements: [80, 95]
+
+all: true # Whether or not to instrument all files (not just the ones touched by your test suite)
+check-coverage: true # Check whether coverage is within thresholds, fail if not
+skip-empty: true # Don't show empty files (no lines of code) in report
+skip-full: true # Don't show files with 100% statement, branch, and function coverage
+
+extension: # List of extensions that nyc should attempt to handle in addition to .js
+  - ".ts"
+  - ".tsx"
+
+cache-dir: .nyc/cache
+report-dir: .nyc/coverage
+temp-dir: .nyc/temp

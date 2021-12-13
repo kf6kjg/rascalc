@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Space Raced Carded Edition Calculator</title>
+		<style type="text/css">
+			h1,
+			h2 {
+				font-size: 12pt;
+			}
+			p {
+				font-size: 8pt;
+			}
+		</style>
+		<script type="text/javascript">
+			function rollDie(sides) {
+				return Math.floor(Math.random() * sides) + 1;
+			}
+
+			function calculate() {
+				roundNode = document.getElementById("round");
+
+				diNode = document.getElementById("di");
+				Di = diNode.value * 1;
+				viNode = document.getElementById("vi");
+				Vi = viNode.value * 1;
+				tiNode = document.getElementById("ti");
+				Ti = tiNode.value * 1;
+
+				xoNode = document.getElementById("xo");
+				Xo = xoNode.value * 1;
+				//xoNode.value="";
+				voNode = document.getElementById("vo");
+				Vo = voNode.value * 1;
+				//voNode.value="";
+				ofNode = document.getElementById("of");
+				Of = ofNode.value;
+				doNode = document.getElementById("do");
+				Do = doNode.value * 1;
+				//doNode.value="";
+
+				smNode = document.getElementById("sm");
+				Sm = smNode.value * 1;
+				//smNode.value="";
+				saNode = document.getElementById("sa");
+				Sa = saNode.value * 1;
+				//saNode.value="";
+				stNode = document.getElementById("st");
+				St = stNode.value * 1;
+				//stNode.value="";
+				sdNode = document.getElementById("sd");
+				Sd = sdNode.value * 1;
+				//sdNode.value="";
+
+				dieRollD = rollDie(10);
+
+				var Df;
+				if (Of == "+") {
+					Df = Math.floor((Do * (Vo - Vi)) / (Sm + Sa + 1)); // * dieRollV / 10
+				} else {
+					Df = Math.floor((Do * (Vi - Vo)) / (Sm + Sa + 1)); // * dieRollV / 10
+				}
+				if (Df < 0) Df = 0;
+				Df += Di;
+
+				dieRollV = rollDie(10);
+
+				var Vf;
+				Vf = Math.floor(Math.sqrt(Vi * Vi + 2 * St * Xo) / (Df + 1)); // * dieRollV / 10
+				if (Vf < 0) Vf = 0; // BUG: Not matching rules!
+
+				var Tt;
+				Tt = Math.floor((2 * Xo) / (Vi + Vf)) + 1;
+
+				Df += Sd * Tt;
+				if (Df < 0) Df = 0;
+
+				diNode.value = Df;
+				viNode.value = Vf;
+				tiNode.value = Tt + Ti;
+
+				// Record
+				document.getElementById("results").innerHTML +=
+					"Round: " +
+					roundNode.value +
+					";\t" +
+					"Damage: " +
+					Df +
+					";\t" +
+					"Velocity: " +
+					Vf +
+					";\t" +
+					"Transit Time: " +
+					Tt +
+					";\t" +
+					"Total Time: " +
+					tiNode.value +
+					";\t" +
+					//					"\tSd="+Sd +
+					//					"Damage Roll: " + dieRollD + ";\t" +
+					//					"Velocity Roll: " + dieRollV + ";\t" +
+					"\n";
+
+				roundNode.value++;
+			}
+
+			function testRounding() {
+				var x = -2.1;
+				alert(
+					"floor(" +
+						x +
+						") = " +
+						Math.floor(x) +
+						", parseInt(" +
+						x +
+						") = " +
+						parseInt(x, 10)
+				);
+			}
+		</script>
+	</head>
+	<body>
+		<div id="form">
+			<h1>Space Race Carded Edition Calculator</h1>
+			<p>
+				Note: due to rounding issues there might be some inaccuracies.
+				<a href="javascript:testRounding();">Click to test these issues.</a>
+			</p>
+			<h2>Current Status</h2>
+			<p>Typically you won't need to adjust these.</p>
+			Round: <input id="round" value="1" size="5" /><br />
+			Damage: <input id="di" type="text" size="5" value="0" />, Velocity:
+			<input id="vi" type="text" size="5" value="0" />AU/h, Time:
+			<input id="ti" type="text" size="8" value="0" />hrs<br />
+			<h2>Current Ship Information</h2>
+			<p>Enter the values from the totals of your Ship and Mod Cards:</p>
+			Ship Maneuverability: <input id="sm" type="text" size="5" value="0" />,
+			Ship Armor: <input id="sa" type="text" size="5" value="0" />, Ship Thrust:
+			<input id="st" type="text" size="5" value="0" />AU/h^2, Ship Damage/hr:
+			<input id="sd" type="text" size="5" value="0" /><br />
+			<h2>Current Obstacle Information</h2>
+			<p>Enter the values from the current Obstacle Card:</p>
+			Obstacle Distance: <input id="xo" type="text" size="5" value="0" />AU,
+			Obstacle Recommended Velocity:
+			<input id="vo" type="text" size="5" value="0" />AU/h, Obstacle Rec. Vel.
+			Flag:
+			<select id="of">
+				<option selected="selected" value="+">+</option>
+				<option value="-">-</option></select
+			>, Obstacle Danger: <input id="do" type="text" size="5" value="0" /><br />
+			<input type="button" onclick="calculate();" value="Calculate" />
+		</div>
+		<div>
+			<h2>Log</h2>
+			<hr />
+			<pre id="results"></pre>
+		</div>
+	</body>
+</html>

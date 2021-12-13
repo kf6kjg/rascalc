@@ -1,0 +1,38 @@
+{
+	"name": "rascalc",
+	"version": "1.0.0",
+	"description": "Online calculator for the Rās space racing collector card game",
+	"scripts": {
+		"lint": "eslint \"**\"",
+		"prepare": "npx patch-package && husky install",
+		"start": "npx http-server src"
+	},
+	"private": true,
+	"homepage": "https://github.com/kf6kjg/rascalc#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/kf6kjg/rascalc.git"
+	},
+	"bugs": {
+		"url": "https://github.com/kf6kjg/rascalc/issues"
+	},
+	"author": "Ricky C",
+	"license": "GPL-3.0-or-later",
+	"devDependencies": {
+		"@slidewave/gitignore-include": "^1.0.5",
+		"@typescript-eslint/eslint-plugin": "^5.6.0",
+		"eslint": "^8.4.1",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-import": "^2.25.3",
+		"eslint-plugin-json": "^3.1.0",
+		"eslint-plugin-markdown": "^2.2.1",
+		"eslint-plugin-yaml": "^0.5.0",
+		"husky": "^7.0.4",
+		"lint-staged": "^12.1.2",
+		"prettier": "^2.5.1",
+		"typescript": "^4.5.3"
+	},
+	"dependencies": {
+		"@types/node": "^16.11.12"
+	}
+}
