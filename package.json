@@ -5,7 +5,7 @@
 	"scripts": {
 		"lint": "eslint \"**\"",
 		"prepare": "npx patch-package && husky install",
-		"start": "npx http-server src"
+		"start": "npx lite-server --baseDir=src"
 	},
 	"private": true,
 	"homepage": "https://github.com/kf6kjg/rascalc#readme",
