@@ -100,7 +100,9 @@
 					Os * Math.floor((Od * (Ov - V0)) / (Sm + Sa + 1))
 				);
 
-				const V = Math.floor(Math.sqrt(V0 * V0 + 2 * St * Ox) / (D0 + Ds + 1));
+				const V = Math.floor(
+					Math.sqrt(V0 * V0 + 2 * St * Ox) / Math.max(1, D0 + Ds)
+				);
 
 				const T = Math.floor((2 * Ox) / (V0 + V)) + 1;
 
