@@ -62,11 +62,14 @@
 				return Math.floor(Math.random() * sides) + 1;
 			}
 
-			function calculate() {
+			function calculate(event) {
+				event.preventDefault();
+
 				const roundNode = document.getElementById("round");
 
 				const form = document.querySelector("form");
 				if (form.checkValidity && !form.checkValidity()) {
+					form.reportValidity();
 					throw new Error("Invalid value in form");
 				}
 
@@ -82,7 +85,7 @@
 				const ovNode = document.getElementById("bestVelocity");
 				const Ov = Number(ovNode.value);
 				const osNode = document.getElementById("bestVelocitySign");
-				const Os = osNode.value;
+				const Os = osNode.value === "+" ? 1 : -1;
 				const doNode = document.getElementById("danger");
 				const Od = Number(doNode.value);
 
@@ -100,7 +103,9 @@
 					Os * Math.floor((Od * (Ov - V0)) / (Sm + Sa + 1))
 				);
 
-				const V = Math.floor(Math.sqrt(V0 * V0 + 2 * St * Ox) / (D0 + Ds + 1));
+				const V = Math.floor(
+					Math.sqrt(V0 * V0 + 2 * St * Ox) / Math.max(1, D0 + Ds)
+				);
 
 				const T = Math.floor((2 * Ox) / (V0 + V)) + 1;
 
@@ -176,6 +181,13 @@
 				row.appendChild(logEntry);
 				document.getElementById("results").appendChild(row);
 			}
+
+			document.addEventListener("DOMContentLoaded", () => {
+				document
+					.getElementById("calculate")
+					.addEventListener("click", calculate);
+				document.getElementById("clearall").addEventListener("click", reset);
+			});
 		</script>
 	</head>
 	<body>
@@ -304,14 +316,14 @@
 					</div>
 				</div>
 				<input
+					id="clearall"
 					type="button"
-					onclick="reset();"
 					value="Clear all"
 					class="mui-btn mui-btn--danger"
 				/>
 				<input
+					id="calculate"
 					type="submit"
-					onclick="calculate();"
 					value="Calculate"
 					class="mui-btn mui-btn--primary mui-btn--raised mui--pull-right"
 				/>
