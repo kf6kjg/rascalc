@@ -85,7 +85,7 @@
 				const ovNode = document.getElementById("bestVelocity");
 				const Ov = Number(ovNode.value);
 				const osNode = document.getElementById("bestVelocitySign");
-				const Os = osNode.value;
+				const Os = osNode.value === "+" ? 1 : -1;
 				const doNode = document.getElementById("danger");
 				const Od = Number(doNode.value);
 
