@@ -65,6 +65,11 @@
 			function calculate() {
 				const roundNode = document.getElementById("round");
 
+				const form = document.querySelector("form");
+				if (form.checkValidity && !form.checkValidity()) {
+					throw new Error("Invalid value in form");
+				}
+
 				const d0Node = document.getElementById("damageInitial");
 				const D0 = Number(d0Node.value);
 				const v0Node = document.getElementById("velocityInitial");
@@ -175,92 +180,95 @@
 	</head>
 	<body>
 		<div id="form" class="mui-container">
-			<h1>Space Race Carded Edition Calculator</h1>
-			<p>
-				Note: due to rounding issues there might be some inaccuracies.
-				<a href="javascript:testRounding();">Click to test these issues.</a>
-			</p>
-			<div class="mui-panel">
-				<legend>
-					<h2>Current Status</h2>
-					<p>Typically you won't need to adjust these.</p>
-				</legend>
-				<div class="mui-textfield float-label">
-					<input id="round" type="number" value="1" />
-					<label for="round">Round</label>
+			<h1>Rās Online Score Computer</h1>
+			<form class="mui-form">
+				<div class="mui-panel">
+					<legend>
+						<h2>Current Status</h2>
+						<p>Typically you won't need to adjust these.</p>
+					</legend>
+					<div class="mui-textfield float-label">
+						<input id="round" type="number" value="1" />
+						<label for="round">Round</label>
+					</div>
+					<div class="mui-textfield float-label">
+						<input id="damageInitial" type="number" value="0" />
+						<label for="damageInitial">Damage</label>
+					</div>
+					<div class="mui-textfield float-label" data-postfix="AU/h">
+						<input id="velocityInitial" type="number" value="0" />
+						<label for="velocityInitial">Velocity</label>
+					</div>
+					<div class="mui-textfield float-label" data-postfix="hours">
+						<input id="totalTime" type="number" value="0" />
+						<label for="totalTime">Total Time</label>
+					</div>
 				</div>
-				<div class="mui-textfield float-label">
-					<input id="damageInitial" type="number" value="0" />
-					<label for="damageInitial">Damage</label>
+				<div class="mui-panel">
+					<legend>
+						<h2>Current Ship Information</h2>
+						<p>Enter the values from the totals of your Ship and Mod Cards</p>
+					</legend>
+					<div class="mui-textfield float-label">
+						<input
+							id="maneuverability"
+							type="number"
+							placeholder="0"
+							required
+						/>
+						<label for="maneuverability">Maneuverability</label>
+					</div>
+					<div class="mui-textfield float-label">
+						<input id="armor" type="number" placeholder="0" required />
+						<label for="armor">Armor</label>
+					</div>
+					<div class="mui-textfield float-label" data-postfix="AU/h^2">
+						<input id="thrust" type="number" placeholder="0" required />
+						<label for="thrust">Thrust</label>
+					</div>
+					<div class="mui-textfield float-label" data-postfix="units/h">
+						<input id="damage" type="number" placeholder="0" required />
+						<label for="damage">Damage</label>
+					</div>
 				</div>
-				<div class="mui-textfield float-label" data-postfix="AU/h">
-					<input id="velocityInitial" type="number" value="0" />
-					<label for="velocityInitial">Velocity</label>
+				<div class="mui-panel">
+					<legend>
+						<h2>Current Obstacle Information</h2>
+						<p>Enter the values from the current Obstacle Card</p>
+					</legend>
+					<div class="mui-textfield float-label" data-postfix="AU">
+						<input id="distance" type="number" placeholder="0" required />
+						<label for="distance">Distance</label>
+					</div>
+					<div class="mui-textfield float-label" data-postfix="AU/h">
+						<input id="bestVelocity" type="number" placeholder="0" required />
+						<label for="bestVelocity">Recommended Velocity</label>
+					</div>
+					<div class="mui-select float-label">
+						<select id="bestVelocitySign">
+							<option selected="selected" value="+">+</option>
+							<option value="-">-</option>
+						</select>
+						<label for="bestVelocitySign">Recommended Velocity Flag</label>
+					</div>
+					<div class="mui-textfield float-label">
+						<input id="danger" type="number" placeholder="0" required />
+						<label for="danger">Danger</label>
+					</div>
 				</div>
-				<div class="mui-textfield float-label" data-postfix="hours">
-					<input id="totalTime" type="number" value="0" />
-					<label for="totalTime">Total Time</label>
-				</div>
-			</div>
-			<div class="mui-panel">
-				<legend>
-					<h2>Current Ship Information</h2>
-					<p>Enter the values from the totals of your Ship and Mod Cards</p>
-				</legend>
-				<div class="mui-textfield float-label">
-					<input id="maneuverability" type="number" placeholder="0" required />
-					<label for="maneuverability">Maneuverability</label>
-				</div>
-				<div class="mui-textfield float-label">
-					<input id="armor" type="number" placeholder="0" required />
-					<label for="armor">Armor</label>
-				</div>
-				<div class="mui-textfield float-label" data-postfix="AU/h^2">
-					<input id="thrust" type="number" placeholder="0" required />
-					<label for="thrust">Thrust</label>
-				</div>
-				<div class="mui-textfield float-label" data-postfix="units/h">
-					<input id="damage" type="number" placeholder="0" required />
-					<label for="damage">Damage</label>
-				</div>
-			</div>
-			<div class="mui-panel">
-				<legend>
-					<h2>Current Obstacle Information</h2>
-					<p>Enter the values from the current Obstacle Card</p>
-				</legend>
-				<div class="mui-textfield float-label" data-postfix="AU">
-					<input id="distance" type="number" placeholder="0" required />
-					<label for="distance">Distance</label>
-				</div>
-				<div class="mui-textfield float-label" data-postfix="AU/h">
-					<input id="bestVelocity" type="number" placeholder="0" required />
-					<label for="bestVelocity">Recommended Velocity</label>
-				</div>
-				<div class="mui-select float-label">
-					<select id="bestVelocitySign">
-						<option selected="selected" value="+">+</option>
-						<option value="-">-</option>
-					</select>
-					<label for="bestVelocitySign">Recommended Velocity Flag</label>
-				</div>
-				<div class="mui-textfield float-label">
-					<input id="danger" type="number" placeholder="0" required />
-					<label for="danger">Danger</label>
-				</div>
-			</div>
-			<input
-				type="submit"
-				onclick="calculate();"
-				value="Calculate"
-				class="mui-btn mui-btn--primary mui-btn--raised"
-			/>
-			<input
-				type="button"
-				onclick="reset();"
-				value="Clear all"
-				class="mui-btn mui-btn--danger mui--pull-right"
-			/>
+				<input
+					type="button"
+					onclick="reset();"
+					value="Clear all"
+					class="mui-btn mui-btn--danger"
+				/>
+				<input
+					type="submit"
+					onclick="calculate();"
+					value="Calculate"
+					class="mui-btn mui-btn--primary mui-btn--raised mui--pull-right"
+				/>
+			</form>
 		</div>
 		<div class="mui-container">
 			<div class="mui-panel">
@@ -280,6 +288,10 @@
 					<tbody id="results"></tbody>
 				</table>
 			</div>
+			<p>
+				Note: due to rounding issues there might be some inaccuracies.
+				<a href="javascript:testRounding();">Click to test these issues.</a>
+			</p>
 		</div>
 	</body>
 </html>
