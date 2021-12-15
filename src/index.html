@@ -4,9 +4,15 @@
 		<title>Rās Online Score Computer</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
 			href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700"
-			media="screen"
+			rel="stylesheet"
+			type="text/css"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&display=swap"
 			rel="stylesheet"
 			type="text/css"
 		/>
@@ -55,6 +61,19 @@
 				div[data-postfix]::after {
 					right: 1.5em;
 				}
+			}
+
+			.mui-appbar {
+				display: flex;
+				justify-content: center;
+				align-items: stretch;
+			}
+			.mui-appbar h1 {
+				text-align: center;
+				font-family: "Syncopate", "Helvetica Neue", Helvetica, Arial;
+				font-weight: 700;
+				text-transform: uppercase;
+				font-size: 18pt;
 			}
 		</style>
 		<script type="text/javascript">
@@ -192,7 +211,9 @@
 	</head>
 	<body>
 		<section id="form" class="mui-container">
-			<h1>Rās Online Score Computer</h1>
+			<header class="mui-appbar">
+				<h1>Rās Online Score Computer</h1>
+			</header>
 			<form class="mui-form">
 				<section class="mui-panel">
 					<legend>
