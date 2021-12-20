@@ -1,0 +1,89 @@
+/**
+* Body CSS
+*/
+html,
+body {
+	font-family: "Roboto", "Helvetica Neue", Helvetica, Arial;
+	height: 100%;
+}
+
+html,
+body,
+input,
+textarea,
+select,
+button {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+}
+
+div[data-postfix] {
+	position: relative;
+}
+div[data-postfix]::after {
+	position: absolute;
+	bottom: 3px;
+	right: 0.5em;
+	transition: all 0.05s ease-in-out;
+	content: attr(data-postfix);
+}
+div[data-postfix]:hover::after,
+div[data-postfix]:focus-within::after {
+	right: 1.5em;
+}
+@supports (-moz-appearance: none) {
+	div[data-postfix]::after {
+		right: 1.5em;
+	}
+}
+
+.mui-appbar {
+	display: flex;
+	justify-content: center;
+	align-items: stretch;
+}
+.mui-appbar h1 {
+	text-align: center;
+	font-family: "Syncopate", "Helvetica Neue", Helvetica, Arial;
+	font-weight: 700;
+	text-transform: uppercase;
+	font-size: 18pt;
+}
+
+.collapsed {
+	display: flex;
+}
+
+.collapsed > legend {
+	order: 99;
+	width: auto;
+	margin-left: 0.5em;
+}
+
+.collapsed > legend > h2 {
+	display: none;
+}
+
+.collapsed :not(:nth-child(2)):not(:first-child) {
+	margin-left: 0.5em;
+	margin-right: 0.5em;
+}
+
+.collapsed .mui-textfield input {
+	border-bottom: none;
+	text-align: center;
+}
+
+.collapsed .mui-textfield[data-postfix] input {
+	text-align: right;
+	padding-right: 2.5em;
+}
+
+.collapsed .mui-textfield[data-postfix]::after {
+	right: 0.5em;
+}
+
+.collapsed .mui-textfield label {
+	text-align: center;
+}
